@@ -10,6 +10,8 @@ tasks = [
     {"id": 3, "title": "upper body workout", "done": False }
 ]
 
+initial_tasks = tasks.copy()  # Store the initial tasks for reset
+
 class Input(BaseModel):
     title: str
     done: bool = False
@@ -39,8 +41,37 @@ def create_task(input: Input):
     return {"data": input_dict}
 
 @app.get("/tasks")
-def get_tasks():
+def get_tasks(done: str | None = None, search: str | None = None):
+    if done is not None and search is None:
+        done_bool = done.lower() == "true"
+        return [task for task in tasks if task["done"] == done_bool]
+
+    if search is not None and done is None:
+        return [task for task in tasks if search.lower() in task["title"].lower()]
+
+    if done is not None and search is not None:
+        done_bool = done.lower() == "true"
+        return [task for task in tasks if task["done"] == done_bool and search.lower() in task["title"].lower()]
+    
     return tasks
+
+@app.get("/tasks/stats")
+def get_stats():
+    total_tasks = len(tasks)
+    completed_tasks = len([task for task in tasks if task["done"]])
+    pending_tasks = total_tasks - completed_tasks
+
+    return {
+        "total_tasks": total_tasks,
+        "completed_tasks": completed_tasks,
+        "pending_tasks": pending_tasks
+    }
+
+@app.get("/tasks/reset")
+def reset_tasks():
+    global tasks
+    tasks = initial_tasks.copy()  # Reset to the initial tasks
+    return {"message": "All tasks have been reset!"}
 
 @app.get("/tasks/{id}")
 def get_task(id: int):
@@ -82,3 +113,4 @@ def delete_task(id: int):
     tasks.pop(index)
     
     return f"successfully deleted task {id} !"
+
