@@ -133,3 +133,73 @@ This interface allows you to test all CRUD endpoints directly from your browser.
 
 - This project uses an **in-memory database**, so all tasks are lost when the server is restarted.
 - It is intended for learning and demonstration purposes.
+
+
+## AI vs Me
+
+ - clean comments and documentations
+ - More Schemas with strong field validation
+ - database created as List of pydantic objects rather than dictionaries
+
+## Prompt used:
+Create a simple and beginner-friendly CRUD REST API for a To-Do List application using FastAPI.
+
+Requirements:
+- Use FastAPI and Pydantic.
+- Do NOT use any external database (SQLite, PostgreSQL, MongoDB, etc.).
+- Store data in an in-memory Python list that acts as the database.
+- Initialize the database with these three sample tasks:
+
+[
+    {"id": 1, "title": "Learn FastAPI", "done": False},
+    {"id": 2, "title": "Build CRUD API", "done": True},
+    {"id": 3, "title": "Write API documentation", "done": False}
+]
+
+Task model:
+- id: int
+- title: str
+- done: bool
+
+API Endpoints:
+1. GET /tasks
+   - Return all tasks.
+   - Status code: 200 OK
+
+2. GET /tasks/{task_id}
+   - Return a single task by ID.
+   - Return 404 Not Found if the task does not exist.
+
+3. POST /tasks
+   - Create a new task.
+   - The client should provide only:
+       - title
+       - done (optional, default=False)
+   - The server should automatically generate a unique integer ID.
+   - Return the created task.
+   - Status code: 201 Created.
+
+4. PUT /tasks/{task_id}
+   - Replace the entire task except for its ID.
+   - Return the updated task.
+   - Return 404 if the task is not found.
+   - Status code: 200 OK.
+
+5. DELETE /tasks/{task_id}
+   - Delete the specified task.
+   - Return 204 No Content.
+   - Return 404 if the task does not exist.
+
+Implementation requirements:
+- Create separate Pydantic schemas for:
+  - Task (response model)
+  - TaskCreate (request model for POST)
+  - TaskUpdate (request model for PUT)
+- Use response_model for appropriate endpoints.
+- Use HTTPException with meaningful error messages.
+- Use appropriate HTTP status codes throughout.
+- Keep the code clean, readable, and well-commented.
+- Avoid unnecessary abstractions or complex patterns.
+- Write everything in a single `main.py` file.
+- Ensure the code follows FastAPI best practices and is easy for beginners to understand.
+ 
