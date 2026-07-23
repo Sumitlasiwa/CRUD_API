@@ -6,6 +6,8 @@ A simple RESTful To-Do List API built with **FastAPI** that uses an **in-memory 
 
 - Create a new task
 - Retrieve all tasks
+- Calculate tasks stats
+- Reset to inital tasks
 - Retrieve a task by ID
 - Update an existing task
 - Delete a task
@@ -90,9 +92,13 @@ curl -X POST http://localhost:8000/tasks \
 |---------|----------|-------------|
 | POST | `/tasks` | Create a new task |
 | GET | `/tasks` | Retrieve all tasks |
+| GET | `/tasks/stats` | Give tasks stats |
+| GET | `/tasks/reset` | Reset to inital tasks |
 | GET | `/tasks/{id}` | Retrieve a task by ID |
 | PUT | `/tasks/{id}` | Update an existing task |
 | DELETE | `/tasks/{id}` | Delete a task |
+
+
 
 ---
 
