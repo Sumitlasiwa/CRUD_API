@@ -14,7 +14,11 @@ class Input(BaseModel):
     title: str
     done: bool = False
 
-    
+def search_task(id: int):
+    for index, task in enumerate(tasks):
+        if task['id'] == id:
+            return index, task
+
 @app.get("/")
 async def root():
     return { "name": "Task API", "version": "1.0", "endpoints": ["/tasks"] }
@@ -46,3 +50,35 @@ def get_task(id: int):
             return task
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= { "error": f"Task {id} not found" })
+
+@app.put("/tasks/{id}")
+def update_task(id: int, input: Input):
+
+    result = search_task(id)
+    
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Task with id {id} not found!")
+    
+    if not input.title:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="title should not be empty!")
+    
+    index, task = result
+    
+    task['title'] = input.title
+    task['done'] = input.done
+    tasks[index] = task
+
+    return task
+
+@app.delete("/tasks/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(id: int):
+
+    result = search_task(id)
+    
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Task with id {id} not found!")
+    
+    index, task = result
+    tasks.pop(index)
+    
+    return f"successfully deleted task {id} !"
