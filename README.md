@@ -21,7 +21,7 @@ A simple RESTful To-Do List API built with **FastAPI** that uses an **in-memory 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/Sumitlasiwa/FlyRank_Backend.git
+git clone https://github.com/Sumitlasiwa/CRUD_API.git
 cd CRUD_API
 ```
 
