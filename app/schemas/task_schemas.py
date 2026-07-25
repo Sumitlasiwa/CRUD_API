@@ -1,13 +1,14 @@
 from pydantic import BaseModel
+from typing import Literal
 
 class Input(BaseModel):
     title: str
-    done: bool = False
+    done: Literal[0,1]
 
 class Output(BaseModel):
     id: int
     title: str
-    done: bool
+    done: Literal[0,1]
 
 class Stats(BaseModel):
     total_tasks: int
