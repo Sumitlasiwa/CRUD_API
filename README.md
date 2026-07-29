@@ -203,6 +203,237 @@ Implementation requirements:
 - Write everything in a single `main.py` file.
 - Ensure the code follows FastAPI best practices and is easy for beginners to understand.
 
+
+# Assignment 2
 # sqlite query result
 ![alt text](image-1.png)
+
+# AI vs me
+
+## input prompt:
+You are modifying an existing FastAPI project.
+
+## Scope
+
+* Work **only inside the `ai-version` folder**.
+* Do **not** modify, delete, rename, or reference files outside `ai-version`.
+* Preserve the existing project structure unless changes are required for the SQLite integration.
+
+## Goal
+
+Migrate the current **in-memory CRUD API** to **SQLite** while following a clean layered architecture:
+
+* Routes Layer → Handles HTTP requests/responses.
+* Services Layer → Contains business logic.
+* Repositories Layer → Handles database access.
+* SQLite database access must use **raw SQL execution only**.
+* Do not use ORM features, SQLModel queries, SQLAlchemy ORM, or query builders.
+* Use parameterized SQL queries for all user input.
+
+## Architecture Requirements
+
+### Routes Layer
+
+* Handle request parsing and response formatting only.
+* No database access.
+* No business logic.
+
+### Services Layer
+
+* Contains business logic.
+* Calls repository methods.
+* Responsible for validation that does not belong in Pydantic schemas.
+
+### Repository Layer
+
+* Contains all SQL statements.
+* Responsible for database interaction only.
+* No business logic.
+
+---
+
+## Database Requirements
+
+Use SQLite as the persistence layer.
+
+### Table Schema
+
+The tasks table must include:
+
+* id
+* title
+* done
+* created_at
+* updated_at
+
+Notes:
+
+* `created_at` is set when a task is created and never changes.
+* `updated_at` is updated whenever a task is modified.
+* Store timestamps in a consistent SQLite-friendly format (ISO 8601 recommended).
+
+### Startup Initialization
+
+At application startup:
+
+1. Create the tasks table if it does not exist.
+2. Check whether the table contains any rows.
+3. If the table is empty, insert 3 seed tasks.
+4. If data already exists, do not reseed.
+
+### Seed Tasks
+
+Insert these seed records when seeding is required:
+
+* Task 1
+* Task 2
+* Task 3
+
+Populate `created_at` and `updated_at` appropriately.
+
+---
+
+## CRUD Migration
+
+Replace the current in-memory storage with SQLite persistence while preserving:
+
+* Existing endpoints
+* Existing request schemas
+* Existing response schemas
+* Existing validation behavior
+* Existing HTTP status codes
+* Existing error responses
+
+The API contract should remain unchanged unless explicitly required below.
+
+---
+
+## Filtering and Sorting
+
+Enhance `GET /tasks` with query parameters.
+
+### Filter by Title
+
+Support:
+
+GET /tasks?title=task
+
+Behavior:
+
+* Return tasks whose title contains the provided text.
+* Use SQL filtering.
+* Case-insensitive matching if supported by SQLite.
+
+### Filter by Done Status
+
+Support:
+
+GET /tasks?done=true
+
+GET /tasks?done=false
+
+Behavior:
+
+* Return only matching tasks.
+
+### Combined Filtering
+
+Support:
+
+GET /tasks?title=task&done=true
+
+Apply all filters together.
+
+### Sorting
+
+Support:
+
+GET /tasks?order_by=title
+
+GET /tasks?order_by=-title
+
+Behavior:
+
+* `title` → ascending order.
+* `-title` → descending order.
+
+Only allow supported sort values.
+Return the same validation behavior used elsewhere in the API for invalid input.
+
+---
+
+## Reset Endpoint
+
+Add:
+
+POST /tasks/reset
+
+Behavior:
+
+1. Delete all existing tasks.
+2. Reinsert the 3 seed tasks.
+3. Return a success response.
+4. Seed records should receive fresh timestamps.
+
+---
+
+## Raw SQL Requirement
+
+All database operations must use raw SQL only.
+
+Examples of allowed statements:
+
+* CREATE TABLE
+* SELECT
+* INSERT
+* UPDATE
+* DELETE
+
+Do not use:
+
+* SQLModel ORM queries
+* SQLAlchemy ORM
+* Repository abstractions that hide SQL generation
+* Query builders
+
+All SQL should be visible and explicit.
+
+---
+
+## Acceptance Criteria
+
+The implementation is complete only if:
+
+* SQLite replaces all in-memory task storage.
+* Routes → Services → Repositories layering is respected.
+* All database access uses raw SQL.
+* Startup seeding works.
+* Empty databases are automatically seeded.
+* `POST /tasks/reset` works.
+* `created_at` is populated on creation.
+* `updated_at` changes on updates.
+* Title filtering works.
+* Done filtering works.
+* Combined filters work.
+* Sorting by title works in both directions.
+* Existing status codes remain unchanged.
+* Existing validation remains unchanged.
+* No files outside `ai-version` are modified.
+
+## Deliverables
+
+1. Inspect the current structure inside `ai-version`.
+2. Explain the planned changes before coding.
+3. Show every modified file.
+4. Explain why each file changed.
+5. Verify all acceptance criteria after implementation.
+
+
+# Things AI did better:
+ - made internal functions
+ - proper query parameter descriptions
+ - completely used raw sql even for database creation
+
+
+
  
