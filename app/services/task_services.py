@@ -4,7 +4,6 @@ from fastapi import HTTPException, status
 from app.schemas.task_schemas import Input
 from app.repositories import task_repository
 from sqlmodel import Session
-from typing import Literal
 
 
 def create_task(input: Input, session: Session):

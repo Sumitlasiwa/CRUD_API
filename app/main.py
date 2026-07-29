@@ -8,6 +8,7 @@ from sqlmodel import Session
 from app.db.database import create_db_and_tables, engine
 from app.routes.task_route import task_router
 from app.services import task_services
+from app.models.models import Task
 
 
 @asynccontextmanager

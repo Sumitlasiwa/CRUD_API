@@ -202,4 +202,7 @@ Implementation requirements:
 - Avoid unnecessary abstractions or complex patterns.
 - Write everything in a single `main.py` file.
 - Ensure the code follows FastAPI best practices and is easy for beginners to understand.
+
+# sqlite query result
+![alt text](image-1.png)
  
