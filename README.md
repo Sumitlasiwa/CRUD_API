@@ -116,7 +116,7 @@ This interface allows you to test all CRUD endpoints directly from your browser.
 
 ### Swagger UI
 
-![Swagger UI](image.png)
+![Swagger UI](images/image.png)
 
 ---
 
@@ -206,7 +206,7 @@ Implementation requirements:
 
 # Assignment 2
 # sqlite query result
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 # AI vs me
 
