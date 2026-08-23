@@ -27,6 +27,19 @@ def reset_tasks(session: SessionDep):
     """Reset tasks to the seeded initial state."""
     return task_services.reset_tasks(session)
 
+@task_router.get("/tasks/health")
+def health_check(session: SessionDep):
+    if task_services.database_health_check(session):
+        return {
+            "status": "healthy",
+            "database": "connected"
+        }
+
+    return {
+        "status": "unhealthy",
+        "database": "not connected"
+    }
+
 @task_router.get("/tasks/{id}", status_code=status.HTTP_200_OK, response_model=task_schemas.Output)
 def get_task(id: int, session: SessionDep):
     """Return a single task by ID."""
@@ -44,3 +57,4 @@ def delete_task(id: int, session: SessionDep):
 def delete_all_tasks(session: SessionDep):
     """Delete all tasks from the database."""
     return task_services.delete_all_tasks(session)
+

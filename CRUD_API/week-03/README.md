@@ -17,10 +17,20 @@ From the project root, create your local environment file and start the full sta
 cp .env.example .env && docker compose up
 ```
 
-This starts the Task API and PostgreSQL together. The API is available at `http://localhost:8000`, and PostgreSQL data is saved in the `taskdata` Docker volume.
+This starts the Task API and PostgreSQL together. The API is available at `http://localhost:8000`, and PostgreSQL data is saved in the `taskdata` Docker volume. The volume keeps database data outside the PostgreSQL container's temporary filesystem. This means tasks remain available when the container is stopped and started again.
 
 To stop the stack, press `Ctrl+C`, then run:
 
 ```bash
 docker compose down
 ```
+
+
+A load balancer periodically calls the /health endpoint and sends traffic only to healthy API instances.
+
+
+slim only uses required dependencies at run
+
+IMAGE                   ID             DISK USAGE   CONTENT SIZE   
+task-api-before:slim   7ec26b85d6f7       2.05GB          528MB       
+task-api-after:slim    7fac5a69f58f        648MB          154MB 

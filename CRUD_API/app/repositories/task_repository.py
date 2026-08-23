@@ -90,3 +90,8 @@ def delete_all_tasks(session: Session):
     sql = text("DELETE FROM task")
     session.execute(sql)
     session.commit()
+
+def check_database(session: Session):
+    sql = text("SELECT 1")
+    session.execute(sql)
+    return True

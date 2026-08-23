@@ -19,7 +19,7 @@ services:
       POSTGRES_DB: tasks
       
     ports:
-      - "5432:5432"
+      - "5432:5432"   # needed just to communicate with external apps like pgadmin
 
     volumes:
       - taskdata:/var/lib/postgresql/data
