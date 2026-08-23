@@ -15,7 +15,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Optional
 
-from app.db.database import get_connection
+from CRUD_API.app.db.database import get_connection
 
 
 # ---------------------------------------------------------------------------

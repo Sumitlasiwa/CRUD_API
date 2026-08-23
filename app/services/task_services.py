@@ -90,3 +90,9 @@ def populate_seed_tasks(session: Session):
         task_repository.reset_tasks(session)
         return {"message": "Seeded initial tasks."}
     return {"message": "Tasks already exist. No seeding performed."}
+
+def database_health_check(session: Session):
+    try:
+        return task_repository.check_database(session)
+    except Exception:
+        return False

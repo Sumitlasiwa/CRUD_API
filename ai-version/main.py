@@ -18,8 +18,8 @@ Then open http://127.0.0.1:8000/docs for the interactive Swagger UI.
 
 from fastapi import FastAPI
 
-from app.db import database
-from app.repositories import task_repository
+from CRUD_API.app.db import database
+from CRUD_API.app.repositories import task_repository
 from app.routes import task_routes
 
 

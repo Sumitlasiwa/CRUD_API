@@ -18,7 +18,7 @@ from typing import Optional
 
 from fastapi import HTTPException, status
 
-from app.repositories import task_repository
+from CRUD_API.app.repositories import task_repository
 
 
 # ---------------------------------------------------------------------------
