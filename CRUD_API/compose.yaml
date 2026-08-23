@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .      # Look for Dockerfile in current folder, Build image from it
+
+    ports:
+      - "8000:3000"   #HOST_PORT : CONTAINER_PORT
+
+    environment:
+      DATABASE_URL : postgresql+psycopg://postgres:dev@db:5432/tasks
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17
+
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: tasks
+      
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - taskdata:/var/lib/postgresql/data
+
+volumes:
+  taskdata:
